@@ -67,9 +67,35 @@ export default async function UserProfilePage({
     )
   }
 
+  // Type assertion to match component interface (excludes Date fields)
+  const userForComponent = user as {
+    id: string
+    name: string | null
+    email: string
+    profile: {
+      skinType: string | null
+      concerns: string
+      sensitivities: string
+      conditions: string
+    } | null
+    stackItems: Array<{
+      id: string
+      rating: string | null
+      role: string | null
+      notes: string | null
+      product: {
+        id: string
+        brand: string
+        name: string
+        category: string
+        imageUrl: string | null
+      }
+    }>
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <UserProfileView user={user} currentUserId={session.user.id} />
+      <UserProfileView user={userForComponent} currentUserId={session.user.id} />
     </div>
   )
 }
