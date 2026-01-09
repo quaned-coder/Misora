@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String?
+  profileImageUrl String?
+  isAdmin       Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  profile       SkinProfile?
+  stackItems    StackItem[]
+}
+
+model SkinProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  skinType        String?  // oily, dry, combination, normal
+  concerns        String   @default("[]") // JSON array: ["acne", "pigmentation", etc.]
+  sensitivities   String   @default("[]") // JSON array: ["fragrance", "retinoids", etc.]
+  conditions      String   @default("[]") // JSON array: ["acne-prone", "rosacea", etc.]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Product {
+  id              String      @id @default(cuid())
+  brand           String
+  name            String
+  category        String      // cleanser, serum, moisturizer, etc.
+  description     String?
+  ingredients     String?     // full ingredient list
+  imageUrl        String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  stackItems      StackItem[]
+}
+
+model StackItem {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  rating          String?  // "works", "meh", "bad"
+  role            String?  // cleanser, serum, etc.
+  notes           String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@unique([userId, productId])
+}
