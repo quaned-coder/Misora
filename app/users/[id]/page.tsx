@@ -30,7 +30,11 @@ export default async function UserProfilePage({
         },
       },
       stackItems: {
-        include: {
+        select: {
+          id: true,
+          rating: true,
+          role: true,
+          notes: true,
           product: {
             select: {
               id: true,
@@ -43,7 +47,7 @@ export default async function UserProfilePage({
           },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: 'desc', // Still order by createdAt, just don't select it
         },
       },
     },
