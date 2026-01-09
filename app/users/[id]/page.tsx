@@ -31,7 +31,16 @@ export default async function UserProfilePage({
       },
       stackItems: {
         include: {
-          product: true,
+          product: {
+            select: {
+              id: true,
+              brand: true,
+              name: true,
+              category: true,
+              imageUrl: true,
+              // Exclude createdAt and updatedAt - not used in UserProfileView
+            },
+          },
         },
         orderBy: {
           createdAt: 'desc',

@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         id: true,
         name: true,
         email: true,
-        createdAt: true,
+        // Exclude createdAt - not used in UserCard/UserSearch
         profile: {
           select: {
             skinType: true,
@@ -49,7 +49,7 @@ export async function GET(request: Request) {
       },
       take: 20, // Limit results
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'desc', // Still order by createdAt, just don't select it
       },
     })
 

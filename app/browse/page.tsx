@@ -33,6 +33,15 @@ export default async function BrowsePage({
 
   const products = await prisma.product.findMany({
     where,
+    select: {
+      id: true,
+      brand: true,
+      name: true,
+      category: true,
+      description: true,
+      imageUrl: true,
+      // Exclude createdAt and updatedAt - not used in ProductList
+    },
     orderBy: { createdAt: 'desc' },
   })
 

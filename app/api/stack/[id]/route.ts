@@ -34,7 +34,22 @@ export async function PATCH(
         role: role || null,
         notes: notes || null,
       },
-      include: { product: true },
+      select: {
+        id: true,
+        rating: true,
+        role: true,
+        notes: true,
+        product: {
+          select: {
+            id: true,
+            brand: true,
+            name: true,
+            category: true,
+            imageUrl: true,
+            // Exclude createdAt and updatedAt - not used in StackItemCard
+          },
+        },
+      },
     })
 
     return NextResponse.json(updated)

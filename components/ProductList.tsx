@@ -2,7 +2,15 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Product } from '@prisma/client'
+
+interface Product {
+  id: string
+  brand: string
+  name: string
+  category: string
+  description: string | null
+  imageUrl: string | null
+}
 
 interface ProductListProps {
   products: Product[]

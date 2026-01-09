@@ -12,7 +12,22 @@ export async function GET() {
 
   const stackItems = await prisma.stackItem.findMany({
     where: { userId: session.user.id },
-    include: { product: true },
+    select: {
+      id: true,
+      rating: true,
+      role: true,
+      notes: true,
+      product: {
+        select: {
+          id: true,
+          brand: true,
+          name: true,
+          category: true,
+          imageUrl: true,
+          // Exclude createdAt and updatedAt - not used in StackItemCard
+        },
+      },
+    },
     orderBy: { createdAt: 'desc' },
   })
 
@@ -70,7 +85,22 @@ export async function POST(request: Request) {
         userId: session.user.id,
         productId,
       },
-      include: { product: true },
+      select: {
+        id: true,
+        rating: true,
+        role: true,
+        notes: true,
+        product: {
+          select: {
+            id: true,
+            brand: true,
+            name: true,
+            category: true,
+            imageUrl: true,
+            // Exclude createdAt and updatedAt - not used in StackItemCard
+          },
+        },
+      },
     })
 
     return NextResponse.json(stackItem, { status: 201 })

@@ -8,7 +8,6 @@ interface User {
   id: string
   name: string | null
   email: string
-  createdAt: string
   profile: {
     skinType: string | null
     concerns: string
