@@ -13,8 +13,20 @@ export default async function SettingsPage() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: {
-      profile: true,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      profileImageUrl: true,
+      profile: {
+        select: {
+          skinType: true,
+          concerns: true,
+          sensitivities: true,
+          conditions: true,
+          // Exclude createdAt and updatedAt - not used in SettingsContent
+        },
+      },
       _count: {
         select: {
           stackItems: true,

@@ -29,6 +29,16 @@ export async function POST(request: Request) {
         ingredients: ingredients || null,
         imageUrl: imageUrl || null,
       },
+      select: {
+        id: true,
+        brand: true,
+        name: true,
+        category: true,
+        description: true,
+        ingredients: true,
+        imageUrl: true,
+        // Exclude createdAt and updatedAt - not used in admin page
+      },
     })
 
     return NextResponse.json(product, { status: 201 })

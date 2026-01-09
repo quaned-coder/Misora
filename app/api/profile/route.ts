@@ -12,6 +12,13 @@ export async function GET() {
 
   const profile = await prisma.skinProfile.findUnique({
     where: { userId: session.user.id },
+    select: {
+      skinType: true,
+      concerns: true,
+      sensitivities: true,
+      conditions: true,
+      // Exclude id, userId, createdAt, updatedAt - not used in ProfilePage
+    },
   })
 
   return NextResponse.json(profile)
@@ -41,6 +48,13 @@ export async function POST(request: Request) {
         concerns: JSON.stringify(concerns || []),
         sensitivities: JSON.stringify(sensitivities || []),
         conditions: JSON.stringify(conditions || []),
+      },
+      select: {
+        skinType: true,
+        concerns: true,
+        sensitivities: true,
+        conditions: true,
+        // Exclude id, userId, createdAt, updatedAt - not used in ProfilePage
       },
     })
 
