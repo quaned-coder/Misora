@@ -67,30 +67,13 @@ export default async function UserProfilePage({
     )
   }
 
-  // Type assertion to match component interface (excludes Date fields)
-  const userForComponent = user as {
-    id: string
-    name: string | null
-    email: string
-    profile: {
-      skinType: string | null
-      concerns: string
-      sensitivities: string
-      conditions: string
-    } | null
-    stackItems: Array<{
-      id: string
-      rating: string | null
-      role: string | null
-      notes: string | null
-      product: {
-        id: string
-        brand: string
-        name: string
-        category: string
-        imageUrl: string | null
-      }
-    }>
+  // Explicitly construct the object without Date fields to satisfy TypeScript
+  const userForComponent = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    profile: user.profile,
+    stackItems: user.stackItems,
   }
 
   return (
