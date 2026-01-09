@@ -90,14 +90,8 @@ export default async function UserProfilePage({
     )
   }
 
-  // Explicitly construct the object without Date fields to satisfy TypeScript
-  const userForComponent = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    profile: user.profile,
-    stackItems: user.stackItems,
-  }
+  // Serialize to JSON and back to strip any Date objects and satisfy TypeScript
+  const userForComponent = JSON.parse(JSON.stringify(user)) as typeof user
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
