@@ -55,9 +55,15 @@ export default async function UserProfilePage({
     )
   }
 
+  // Convert Date to string for the component
+  const userWithStringDate = {
+    ...user,
+    createdAt: user.createdAt.toISOString(),
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <UserProfileView user={user} currentUserId={session.user.id} />
+      <UserProfileView user={userWithStringDate} currentUserId={session.user.id} />
     </div>
   )
 }
