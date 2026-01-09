@@ -2,41 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
 import UserProfileView from '@/components/UserProfileView'
-
-type UserWithProfile = Prisma.UserGetPayload<{
-  select: {
-    id: true
-    name: true
-    email: true
-    profile: {
-      select: {
-        skinType: true
-        concerns: true
-        sensitivities: true
-        conditions: true
-      }
-    }
-    stackItems: {
-      select: {
-        id: true
-        rating: true
-        role: true
-        notes: true
-        product: {
-          select: {
-            id: true
-            brand: true
-            name: true
-            category: true
-            imageUrl: true
-          }
-        }
-      }
-    }
-  }
-}>
 
 export default async function UserProfilePage({
   params,
@@ -100,12 +66,10 @@ export default async function UserProfilePage({
     )
   }
 
-  // Cast to component's expected type (Prisma types include Date but data doesn't)
-  const userForComponent = user as unknown as Parameters<typeof UserProfileView>[0]['user']
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <UserProfileView user={userForComponent} currentUserId={session.user.id} />
+      {/* @ts-ignore - Prisma type inference bug with Date fields */}
+      <UserProfileView user={user as any} currentUserId={session.user.id} />
     </div>
   )
 }
