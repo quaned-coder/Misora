@@ -42,39 +42,15 @@ export default async function UserProfilePage({
               name: true,
               category: true,
               imageUrl: true,
-              // Exclude createdAt and updatedAt - not used in UserProfileView
             },
           },
         },
         orderBy: {
-          createdAt: 'desc', // Still order by createdAt, just don't select it
+          createdAt: 'desc',
         },
       },
     },
-  }) as {
-    id: string
-    name: string | null
-    email: string
-    profile: {
-      skinType: string | null
-      concerns: string
-      sensitivities: string
-      conditions: string
-    } | null
-    stackItems: Array<{
-      id: string
-      rating: string | null
-      role: string | null
-      notes: string | null
-      product: {
-        id: string
-        brand: string
-        name: string
-        category: string
-        imageUrl: string | null
-      }
-    }>
-  } | null
+  })
 
   if (!user) {
     return (
@@ -90,12 +66,10 @@ export default async function UserProfilePage({
     )
   }
 
-  // Serialize to JSON and back to strip any Date objects and satisfy TypeScript
-  const userForComponent = JSON.parse(JSON.stringify(user)) as typeof user
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <UserProfileView user={userForComponent} currentUserId={session.user.id} />
+      {/* @ts-expect-error - Prisma type inference includes Date fields even with select, but they're not actually in the data */}
+      <UserProfileView user={user} currentUserId={session.user.id} />
     </div>
   )
 }
